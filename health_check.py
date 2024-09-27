@@ -18,14 +18,10 @@ def health_check():
 
     # Información de Memoria RAM
     ram = psutil.virtual_memory()
-    print(ram)
     ram_usage = ram.percent
     ram_total_gb = ram.total / 1e9
     ram_available_gb = ram.available / 1e9
     ram_used_gb = ram.used / 1e9
-    ram_free_gb = ram.free / 1e9
-    ram_active_gb = ram.active / 1e9
-    ram_inactive_gb = ram.inactive / 1e9
 
     # Crear un diccionario con la información
     health_info = {
@@ -37,35 +33,25 @@ def health_check():
             "total_gb": ram_total_gb,
             "available_gb": ram_available_gb,
             "used_gb": ram_used_gb,
-            "free_gb": ram_free_gb,
-            "active_gb": ram_active_gb,
-            "inactive_gb": ram_inactive_gb
         },
     }
 
     # Información de Disco
     # Ejecutar disk.py para tomar la información de las particiones correspondientes
     if os_info == "Windows":
-        disk = psutil.disk_usage('/System/Volumes/Data')
-        disk_usage = disk.percent
-        disk_total_gb = disk.total / 1e9  # Convertir a GB
-        disk_used_gb = disk.used / 1e9
-        disk_free_gb = disk.free / 1e9
-        disk = {"disk": {"usage_percentage": disk_usage,
-                         "total_gb": disk_total_gb,
-                         "used_gb": disk_used_gb,
-                         "free_gb": disk_free_gb}}
+        disk = psutil.disk_usage('C:\\')
+        disk = {"disk": {"usage_percentage": disk.percent,
+                         "total_gb": disk.total / 1e9,
+                         "used_gb": disk.used / 1e9,
+                         "free_gb": disk.free / 1e9}}
         health_info.update(disk)
     elif os_info == "Darwin":
         disk = psutil.disk_usage('/System/Volumes/Data')
-        disk_usage = disk.percent
-        disk_total_gb = disk.total / 1e9  # Convertir a GB
-        disk_used_gb = disk.used / 1e9
-        disk_free_gb = disk.free / 1e9
-        disk = {"disk": {"usage_percentage": disk_usage,
-                         "total_gb": disk_total_gb,
-                         "used_gb": disk_used_gb,
-                         "free_gb": disk_free_gb}}
+        disk = {"disk": {"usage_percentage": disk.percent,
+                         "total_gb": disk.total / 1e9,
+                         "used_gb": disk.used / 1e9,
+                         "free_gb": disk.free / 1e9}}
+        health_info.update(disk)
         health_info.update(disk)
     return health_info
 
