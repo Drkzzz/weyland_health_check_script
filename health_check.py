@@ -1,6 +1,7 @@
 import psutil
 import platform
 
+
 def get_os_info():
     os_name = platform.system()
     return os_name
@@ -11,7 +12,12 @@ os_info = get_os_info()
 
 def health_check():
     # Información de CPU
+
+    # CPU Usage
     cpu_usage = psutil.cpu_percent(interval=1)
+
+    # CPU Freq
+    cpu_freq = psutil.cpu_freq(percpu=False)
 
     # Información de Memoria RAM
     ram = psutil.virtual_memory()
@@ -24,6 +30,9 @@ def health_check():
     health_info = {
         "cpu": {
             "usage_percentage": cpu_usage,
+            "current_cpu_freq": cpu_freq.current,
+            "max_cpu_freq": cpu_freq.max,
+            "min_cpu_freq": cpu_freq.min,
         },
         "ram": {
             "usage_percentage": ram_usage,
@@ -60,6 +69,8 @@ def print_health_info(info):
             # Imprimir el valor con dos decimales, excepto para el porcentaje
             if 'percentage' in metric:
                 print(f"  {metric}: {value:.2f}%")
+            elif 'freq' in metric:
+                print(f"  {metric}: {value:.2f} Mhz")
             else:
                 print(f"  {metric}: {value:.2f} GB")
 
