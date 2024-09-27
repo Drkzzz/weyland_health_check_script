@@ -52,7 +52,6 @@ def health_check():
                          "used_gb": disk.used / 1e9,
                          "free_gb": disk.free / 1e9}}
         health_info.update(disk)
-        health_info.update(disk)
     return health_info
 
 
