@@ -1,8 +1,5 @@
 import psutil
 import platform
-import subprocess
-import subprocess
-
 
 def get_os_info():
     os_name = platform.system()
